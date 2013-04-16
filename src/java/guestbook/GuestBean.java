@@ -3,6 +3,7 @@
 package guestbook;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,89 +16,49 @@ import javax.sql.rowset.CachedRowSet;
 public class GuestBean
 {
    // instance variables that represent one address
-   private String firstName;
-   private String lastName;
-   private String street;
-   private String city;
-   private String state;
-   private String zipcode;
+   private Date  date;
+   private String name;
+   private String email;
+   private String message;
 
    // allow the server to inject the DataSource
    @Resource( name="jdbc/guestbook" )
    DataSource dataSource;
+
+    public Date getDate() {
+        date = new Date();
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
   
-   // get the first name
-   public String getFirstName()
-   {
-      return firstName;
-   } // end method getFirstName
-
-   // set the first name
-   public void setFirstName( String firstName )
-   {
-      this.firstName = firstName;
-   } // end method setFirstName
-
-   // get the last name
-   public String getLastName()
-   {
-      return lastName;
-   } // end method getLastName
-
-   // set the last name
-   public void setLastName( String lastName )
-   {
-      this.lastName = lastName;
-   } // end method setLastName
-
-   // get the street
-   public String getStreet()
-   {
-      return street;
-   } // end method getStreet
-
-   // set the street
-   public void setStreet( String street )
-   {
-      this.street = street;
-   } // end method setStreet
-
-   // get the city
-   public String getCity()
-   {
-      return city;
-   } // end method getCity
-
-   // set the city
-   public void setCity( String city )
-   {
-      this.city = city;
-   } // end method setCity
-
-   // get the state
-   public String getState()
-   {
-      return state;
-   } // end method getState
-
-   // set the state
-   public void setState( String state )
-   {
-      this.state = state;
-   } // end method setState
-
-   // get the zipcode
-   public String getZipcode()
-   {
-      return zipcode;
-   } // end method getZipcode
-
-   // set the zipcode
-   public void setZipcode( String zipcode )
-   {
-      this.zipcode = zipcode;
-   } // end method setZipcode
-
+   
    // save a new address book entry
    public String save() throws SQLException
    {
@@ -116,17 +77,17 @@ public class GuestBean
       {
          // create a PreparedStatement to insert a new address book entry
          PreparedStatement addEntry =
-            connection.prepareStatement( "INSERT INTO ADDRESSES " +
-               "(FIRSTNAME,LASTNAME,STREET,CITY,STATE,ZIP)" +
-               "VALUES ( ?, ?, ?, ?, ?, ? )" );
+            connection.prepareStatement( "INSERT INTO MESSAGES " +
+               "(DATE,NAME,EMAIL,MESSAGE)" +
+               "VALUES ( ?, ?, ?, ?)" );
 
          // specify the PreparedStatement's arguments
-         addEntry.setString( 1, getFirstName() );
-         addEntry.setString( 2, getLastName() );
-         addEntry.setString( 3, getStreet() );
-         addEntry.setString( 4, getCity() );
-         addEntry.setString( 5, getState() );
-         addEntry.setString( 6, getZipcode() );
+         java.sql.Date sqlDate = new java.sql.Date(getDate().getTime());
+         
+         addEntry.setDate( 1, sqlDate );
+         addEntry.setString( 2, getName() );
+         addEntry.setString( 3, getEmail() );
+         addEntry.setString( 4, getMessage() );
 
          addEntry.executeUpdate(); // insert the entry
          return "index"; // go back to index.xhtml page
@@ -155,8 +116,8 @@ public class GuestBean
       {
          // create a PreparedStatement to insert a new address book entry
          PreparedStatement getAddresses = connection.prepareStatement(
-            "SELECT FIRSTNAME, LASTNAME, STREET, CITY, STATE, ZIP " +
-            "FROM ADDRESSES ORDER BY LASTNAME, FIRSTNAME" );
+            "SELECT DATE, NAME, EMAIL, MESSAGE " +
+            "FROM MESSAGES");
 
          CachedRowSet rowSet = new com.sun.rowset.CachedRowSetImpl();
          rowSet.populate( getAddresses.executeQuery() );

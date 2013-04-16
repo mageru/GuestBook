@@ -21,28 +21,20 @@
          rowClasses="oddRows,evenRows" headerClass="header"
          styleClass="table" cellpadding="5" cellspacing="0">
          <h:column>
-            <f:facet name="header">First Name</f:facet>
-            #{guest.FIRSTNAME}
+            <f:facet name="header">DATE</f:facet>
+            #{guest.DATE}
          </h:column>
          <h:column>
-            <f:facet name="header">Last Name</f:facet>
-            #{guest.LASTNAME}
+            <f:facet name="header">NAME</f:facet>
+            #{guest.NAME}
          </h:column>
          <h:column>
-            <f:facet name="header">Street</f:facet>
-            #{guest.STREET}
+            <f:facet name="header">EMAIL</f:facet>
+            #{guest.EMAIL}
          </h:column>
          <h:column>
-            <f:facet name="header">City</f:facet>
-            #{guest.CITY}
-         </h:column>
-         <h:column>
-            <f:facet name="header">State</f:facet>
-            #{guest.STATE}
-         </h:column>
-         <h:column>
-            <f:facet name="header">Zip code</f:facet>
-            #{guest.ZIP}
+            <f:facet name="header">MESSAGE</f:facet>
+            #{guest.MESSAGE}
          </h:column>
       </h:dataTable>
       <p>
@@ -50,43 +42,26 @@
       </p>
       <div id="guestForm" style="display: none;">
       <h:form>
-         <h:panelGrid id="addAddress" columns="3">
-            <h:outputText value="First name:"/>
-            <h:inputText id="firstNameInputText" required="true"
-               requiredMessage="Please enter first name"
-               value="#{guestBean.firstName}" maxlength="30">
+         <h:panelGrid id="addAddress" columns="3">            
+            <h:message for="nameInputText" styleClass="error"/>
+            <h:outputText value="Name:"/>
+            <h:inputText id="nameInputText" required="true"
+               requiredMessage="Please enter your name"
+               value="#{guestBean.name}" maxlength="30">
             </h:inputText>
-            <h:message for="firstNameInputText" styleClass="error"/>
-            <h:outputText value="Last name:"/>
-            <h:inputText id="lastNameInputText" required="true"
-               requiredMessage="Please enter last name"
-               value="#{guestBean.lastName}" maxlength="30">
-            </h:inputText>
-            <h:message for="lastNameInputText" styleClass="error"/>
-            <h:outputText value="Street:"/>
-            <h:inputText id="streetInputText" required="true"
+            <h:message for="nameInputText" styleClass="error"/>
+            <h:outputText value="Email:"/>
+            <h:inputText id="emailInputText" required="true"
                requiredMessage="Please enter the street guest"
-               value="#{guestBean.street}" maxlength="150">
+               value="#{guestBean.email}" maxlength="150">
             </h:inputText>
-            <h:message for="streetInputText" styleClass="error"/>
-            <h:outputText value="City:"/>
+            <h:message for="emailInputText" styleClass="error"/>
+            <h:outputText value="Message:"/>
             <h:inputText id="cityInputText" required="true"
-               requiredMessage="Please enter the city"
-               value="#{guestBean.city}" maxlength="30">
+               requiredMessage="Please enter your message"
+               value="#{guestBean.message}" maxlength="30">
             </h:inputText>
-            <h:message for="cityInputText" styleClass="error"/>
-            <h:outputText value="State:"/>
-            <h:inputText id="stateInputText" required="true"
-               requiredMessage="Please enter state"
-               value="#{guestBean.state}" maxlength="2">
-            </h:inputText>
-            <h:message for="stateInputText" styleClass="error"/>
-            <h:outputText value="Zipcode:"/>
-            <h:inputText id="zipcodeInputText" required="true"
-               requiredMessage="Please enter zipcode"
-               value="#{guestBean.zipcode}" maxlength="5">
-            </h:inputText>
-            <h:message for="zipcodeInputText" styleClass="error"/>
+            <h:message for="messageInputText" styleClass="error"/>        
          </h:panelGrid>
          <h:commandButton value="Sign Guest Book"
                           action="#{guestBean.save}" onclick="hide('guestForm');">
